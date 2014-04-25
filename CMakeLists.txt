@@ -94,7 +94,7 @@ set_target_properties(${libname} PROPERTIES
 	STARK_PUBLIC_HEADER_CHECK_FILE "ev.h"
 	VERSION 4.15
 	PREFIX ""
-	LIBFILENAME "${libname}")
+	LIBFILENAME "ev")
 
 if(MSVC)
 	set_target_properties(${libname} PROPERTIES
