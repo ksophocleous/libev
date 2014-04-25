@@ -1556,7 +1556,7 @@ typedef struct
 /*****************************************************************************/
 
 #ifndef EV_HAVE_EV_TIME
-#if 0
+#if 1
 ev_tstamp
 ev_time (void) EV_THROW
 {
