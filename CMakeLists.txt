@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 2.8)
 
 project(libev C)
 
-include("../stark/stark.cmake" OPTIONAL RESULT_VARIABLE STARK_FOUND)
+include("stark.cmake" OPTIONAL RESULT_VARIABLE STARK_FOUND)
 
 include(CheckIncludeFiles)
 include(CheckFunctionExists)
