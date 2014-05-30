@@ -57,14 +57,7 @@ check_library_exists(rt pthread_create "" HAVE_LIBRT)
 
 configure_file(config.h.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
-# Ignore deprecation warnings and cast warnings
-if(MSVC)
-	#list(APPEND symbols_warnings "/wd4244" "/wd4996")
-	# add_definitions("/wd4244")
-	# add_definitions("/wd4996")
-endif()
-
-# libev doesn't do dll export so shared wont work without modifying the code
+# libev doesn't do dll export so shared wont work without modifying the code (for msvc)
 set(libtype STATIC)
 
 set(src
@@ -81,7 +74,9 @@ set(internal_hdrs
 	"event.h"
 	"ev_vars.h")
 
-set(public_hdrs "ev.h" "ev++.h")
+set(public_hdrs
+	"ev.h"
+	"ev++.h")
 
 add_library(${libname} ${libtype} ${src} ${public_hdrs} ${internal_hdrs})
 target_link_libraries(${libname} ${platformlibs} ${libs})
