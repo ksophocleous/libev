@@ -2,8 +2,6 @@ cmake_minimum_required (VERSION 2.8)
 
 project(libev C)
 
-include("stark.cmake" OPTIONAL RESULT_VARIABLE STARK_FOUND)
-
 include(CheckIncludeFiles)
 include(CheckFunctionExists)
 include(CheckLibraryExists)
@@ -57,6 +55,9 @@ check_library_exists(rt pthread_create "" HAVE_LIBRT)
 
 configure_file(config.h.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
+list(APPEND include_dirs "${CMAKE_CURRENT_SOURCE_DIR}")
+list(APPEND include_dirs "${CMAKE_CURRENT_BINARY_DIR}")
+
 # libev doesn't do dll export so shared wont work without modifying the code (for msvc)
 set(libtype STATIC)
 
@@ -82,11 +83,9 @@ add_library(${libname} ${libtype} ${src} ${public_hdrs} ${internal_hdrs})
 target_link_libraries(${libname} ${platformlibs} ${libs})
 
 set_target_properties(${libname} PROPERTIES 
-	INCLUDE_DIRECTORIES "${CMAKE_CURRENT_BINARY_DIR};${CMAKE_CURRENT_SOURCE_DIR}"
+	INCLUDE_DIRECTORIES "${include_dirs}"
+	INTERFACE_INCLUDE_DIRECTORIES "${include_dirs}"
 	PUBLIC_HEADER "${public_hdrs}"
-	STARK_PUBLIC_HEADER_LOC "include"
-	STARK_PUBLIC_HEADER_DESTINATION "include"
-	STARK_PUBLIC_HEADER_CHECK_FILE "ev.h"
 	VERSION 4.15
 	PREFIX ""
 	LIBFILENAME "ev")
@@ -94,9 +93,4 @@ set_target_properties(${libname} PROPERTIES
 if(MSVC)
 	set_target_properties(${libname} PROPERTIES
 		COMPILE_FLAGS "/wd4244 /wd4996")
-endif()
-
-if (STARK_FOUND)
-	stark_install(${libname})
-	stark_unify(${libname})
 endif()
